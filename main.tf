@@ -8,7 +8,7 @@ module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
   version = "2.77.0"
 
-  name                 = "education"
+  name                 = "swalker"
   cidr                 = "10.0.0.0/16"
   azs                  = data.aws_availability_zones.available.names
   public_subnets       = ["10.0.4.0/24", "10.0.5.0/24", "10.0.6.0/24"]
@@ -16,17 +16,17 @@ module "vpc" {
   enable_dns_support   = true
 }
 
-resource "aws_db_subnet_group" "education" {
-  name       = "education"
+resource "aws_db_subnet_group" "swalker" {
+  name       = "swalker"
   subnet_ids = module.vpc.public_subnets
 
   tags = {
-    Name = "Education"
+    Name = "swalker"
   }
 }
 
 resource "aws_security_group" "rds" {
-  name   = "education_rds"
+  name   = "swalker_rds"
   vpc_id = module.vpc.vpc_id
 
   ingress {
@@ -44,12 +44,12 @@ resource "aws_security_group" "rds" {
   }
 
   tags = {
-    Name = "education_rds"
+    Name = "swalker_rds"
   }
 }
 
-resource "aws_db_parameter_group" "education" {
-  name   = "education"
+resource "aws_db_parameter_group" "swalker" {
+  name   = "swalker"
   family = "postgres14"
 
   parameter {
@@ -64,7 +64,7 @@ resource "random_pet" "random" {
   length = 1
 }
 
-resource "aws_db_instance" "education" {
+resource "aws_db_instance" "swalker" {
   identifier             = "${var.db_name}-${random_pet.random.id}"
   instance_class         = "db.t3.micro"
   allocated_storage      = 5
